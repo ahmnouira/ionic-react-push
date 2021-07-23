@@ -1,6 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter, IonList, IonItem, IonLabel, IonListHeader, IonText } from '@ionic/react';
 import React from 'react';
-import { Plugin,registerPlugin,   } from '@capacitor/core';
 
 import {
   ActionPerformed,
@@ -10,16 +9,16 @@ import {
 } from '@capacitor/push-notifications';
 
 
-const INITIAL_STATE = {
-  notifications: [{ id: 'id', title: "Test Push", body: "This is my first push notification" }],
-};
-
 const Home = (props: any) => {
 
 
-  const [notifications, setNotifications] = React.useState(INITIAL_STATE.notifications)
+  const [notifications, setNotifications] = React.useState<any[]>([])
+
+  const [token, settoken] = React.useState('')
 
   React.useEffect(() => {
+
+    
 
      // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
@@ -27,19 +26,21 @@ const Home = (props: any) => {
     PushNotifications.requestPermissions().then(result => {
       if (result.receive === 'granted') {
         // Register with Apple / Google to receive push via APNS/FCM
-        PushNotifications.register();
+        PushNotifications.register().catch(console.error);
       } else {
         // Show some error
-        alert('please allow to receive notifications')
+        alert('Please allow to receive notifications')
       }
     });
 
-    PushNotifications.addListener('registration', (token: Token) => {
-      alert('Push registration success, token: ' + token.value);
-    });
 
     PushNotifications.addListener('registrationError', (error: any) => {
       alert('Error on registration: ' + JSON.stringify(error));
+    });
+
+  
+    PushNotifications.addListener('registration', (token: Token) => {
+      settoken(token.value)
     });
 
     PushNotifications.addListener(
@@ -62,8 +63,6 @@ const Home = (props: any) => {
     PushNotifications.addListener(
       'pushNotificationActionPerformed',
       (notification: ActionPerformed) => {
-
-        
         alert('Push action performed: ' + JSON.stringify(notification));
       },
     );
@@ -78,15 +77,13 @@ const Home = (props: any) => {
       <IonPage>
         <IonHeader>
           <IonToolbar color="primary">
-            <IonTitle>Enappd</IonTitle>
-          </IonToolbar>
-          <IonToolbar color="medium">
             <IonTitle>Ionic React Push Example</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
           <IonList>
             <IonListHeader>
+              <IonLabel contentEditable>DeviceToken: {token}</IonLabel>
               <IonLabel>Notifications</IonLabel>
             </IonListHeader>
             {notifications && notifications.map((notif: any) =>
@@ -101,12 +98,8 @@ const Home = (props: any) => {
             )}
           </IonList>
         </IonContent>
-        <IonFooter>
-          <IonToolbar>
-            <IonButton expand="full" >Register for Push</IonButton>
-          </IonToolbar>
-        </IonFooter>
       </IonPage >
+      
     );
   };
 export default Home;

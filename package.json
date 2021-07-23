@@ -45,6 +45,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "android:certif": "cd android && ./gradlew signingReport",
+    "android:clean": "cd android && ./gradlew clean",
+    "android:debug": "cd android && ./gradlew installDebug",
+    "update": "ionic cap copy && ionic cap sync",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
