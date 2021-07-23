@@ -56,7 +56,6 @@ const Home = (props: any) => {
         ]
 
         setNotifications(newNotifications)
-        alert('Push received: ' + JSON.stringify(notification));
       },
     );
 
