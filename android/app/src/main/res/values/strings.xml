@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">IonicReactPush</string>
+    <string name="title_activity_main">IonicReactPush</string>
+    <string name="package_name">com.ahmnouira.ionicReactPush</string>
+    <string name="custom_url_scheme">com.ahmnouira.ionicReactPush</string>
+</resources>

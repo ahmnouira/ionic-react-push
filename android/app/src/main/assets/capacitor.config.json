@@ -1,0 +1,6 @@
+{
+	"appId": "com.ahmnouira.ionicReactPush",
+	"appName": "IonicReactPush",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "595745599393",
+    "firebase_url": "https://hello-c7852.firebaseio.com",
+    "project_id": "hello-c7852",
+    "storage_bucket": "hello-c7852.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595745599393:android:80aaecd47580a095d925e0",
+        "android_client_info": {
+          "package_name": "com.ahmnouira.ionicReactPush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595745599393-p4j01714tvph7n5jlgb9dnh9joc8qgq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMIIL02jYOj2ZsiQVt5Rat3yDQvmYzH7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595745599393-p4j01714tvph7n5jlgb9dnh9joc8qgq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
