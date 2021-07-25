@@ -30,7 +30,7 @@ const Home = (props: any) => {
     const setInitBadge = async () => {
       const permitted = await requestBadgePermission()
       if (permitted) {
-        setBadge(notifications.length)
+        setBadge(notifications.length + 10)
       }
     }
     setInitBadge()
