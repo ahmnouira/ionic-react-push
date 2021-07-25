@@ -7,19 +7,19 @@ import {
   PushNotifications,
   Token,
 } from '@capacitor/push-notifications';
+import { Notification } from '../models/notification';
 
 
 const Home = (props: any) => {
 
 
-  const [notifications, setNotifications] = React.useState<any[]>([])
+  const [notifications, setNotifications] = React.useState<Notification[]>([])
 
-  const [token, settoken] = React.useState('')
+  const [token, setToken] = React.useState('')
 
   React.useEffect(() => {
 
-    
-
+  
      // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
     // Android will just grant without prompting
@@ -40,29 +40,36 @@ const Home = (props: any) => {
 
   
     PushNotifications.addListener('registration', (token: Token) => {
-      settoken(token.value)
+      setToken(token.value)
     });
 
     PushNotifications.addListener(
       'pushNotificationReceived',
       (notification: PushNotificationSchema) => {
-        const newNotifications = [
-          ...notifications, 
-          {
-              id: notification.id,
-              title: notification.title || `title:${notification.id}`,
-              body: notification.body || `body:${notification.body}`
-          }
-        ]
 
-        setNotifications(newNotifications)
+        const newNotification: Notification = {
+          id: notification.id,
+          title: notification.title || `title:${notification.id}`,
+          body: notification.body || `body:${notification.body}`,
+          unread: true,
+          isBackground: false
+        }
+        setNotifications([newNotification, ...notifications])
       },
     );
 
     PushNotifications.addListener(
       'pushNotificationActionPerformed',
       (notification: ActionPerformed) => {
-        alert('Push action performed: ' + JSON.stringify(notification));
+        const {notification: notif} = notification
+        const newNotification: Notification = {
+          id: notif.id,
+          title: notif.title || `title:${notif.id}`,
+          body: notif.body || `body:${notif.body}`,
+          unread: true,
+          isBackground: true
+        }
+        setNotifications([newNotification, ...notifications])
       },
     );
 
