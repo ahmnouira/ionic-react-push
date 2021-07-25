@@ -4,8 +4,6 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonButton,
-  IonFooter,
   IonList,
   IonItem,
   IonLabel,
@@ -17,6 +15,7 @@ import React from 'react'
 import { ActionPerformed, PushNotificationSchema, PushNotifications, Token } from '@capacitor/push-notifications'
 import { Notification } from '../models/notification'
 import { requestBadgePermission, setBadge } from '../services/badge.servcie'
+import { Badge } from '@ionic-native/badge'
 
 const Home = (props: any) => {
   const [notifications, setNotifications] = React.useState<Notification[]>([])
@@ -27,6 +26,14 @@ const Home = (props: any) => {
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
     // Android will just grant without prompting
+
+    const setInitBadge = async () => {
+      const permitted = await requestBadgePermission()
+      if (permitted) {
+        setBadge(notifications.length)
+      }
+    }
+    setInitBadge()
     PushNotifications.requestPermissions().then((result) => {
       if (result.receive === 'granted') {
         // Register with Apple / Google to receive push via APNS/FCM
@@ -46,6 +53,7 @@ const Home = (props: any) => {
     })
 
     PushNotifications.addListener('pushNotificationReceived', async (notification: PushNotificationSchema) => {
+
       const newNotification: Notification = {
         id: notification.id,
         title: notification.title || `title:${notification.id}`,
@@ -53,15 +61,12 @@ const Home = (props: any) => {
         unread: true,
         isBackground: false,
       }
-      const permitted = await requestBadgePermission()
-      if (permitted) {
-        setBadge(notifications.length + 1)
-      }
-
+      Badge.increase(1)
       setNotifications([newNotification, ...notifications])
     })
 
     PushNotifications.addListener('pushNotificationActionPerformed', async (notification: ActionPerformed) => {
+
       const { notification: notif } = notification
       const newNotification: Notification = {
         id: notif.id,
@@ -70,11 +75,14 @@ const Home = (props: any) => {
         unread: true,
         isBackground: true,
       }
-
+      /*
       const permitted = await requestBadgePermission()
       if (permitted) {
         setBadge(notifications.length + 1)
       }
+      */
+      Badge.increase(1)
+
       setNotifications([newNotification, ...notifications])
     })
 
@@ -97,13 +105,15 @@ const Home = (props: any) => {
             <IonLabel>Notifications</IonLabel>
           </IonListHeader>
           {notifications &&
-            notifications.map((notif: any) => (
-              <IonItem key={notif.id}>
+            notifications.map((notif: any, key) => (
+              <IonItem key={key}>
                 <IonLabel>
                   <IonText>
                     <h3>{notif.title}</h3>
                   </IonText>
                   <p>{notif.body}</p>
+
+                  <p>{notifications.length}</p>
                 </IonLabel>
               </IonItem>
             ))}
